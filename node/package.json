@@ -1,0 +1,14 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "let's learn node, making a simple server with nodejs,finnally add further feature",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cjt",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
