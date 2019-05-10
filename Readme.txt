@@ -1,2 +1,2 @@
-hellow this is a readme
+learn something & do something funny
 
