@@ -1,18 +1,23 @@
 const superagent = require('superagent')
 const cheerio = require('cheerio')
 let hotNews = []
-function getBaiduNews () {
-  superagent.get('http://news.baidu.com/').end((err, res) => {
-    if (err) {
-      // 如果访问失败或者出错，会这行这里
-      console.log(`热点新闻抓取失败 - ${err}`)
-    } else {
-      // 访问成功，请求http://news.baidu.com/页面所返回的数据会包含在res
-      // 抓取热点新闻数据
-      hotNews = getHotNews(res)
-      return hotNews
-    }
-  })
+// 获取百度新闻
+async function  getBaiduNews () {
+ return await new Promise((resolve,rej)=>{
+    superagent.get('http://news.baidu.com/').end((err, res) => {
+      if (err) {
+        // 如果访问失败或者出错，会这行这里
+        console.log(`热点新闻抓取失败 - ${err}`)
+        rej(err)
+      } else {
+        // 访问成功，请求http://news.baidu.com/页面所返回的数据会包含在res
+        // 抓取热点新闻数据
+        hotNews = getHotNews(res)
+        // console.log('hotnews',hotNews)
+        resolve(hotNews)
+      }
+    })
+ })
 }
 let getHotNews = (res) => {
   let hotNews = []

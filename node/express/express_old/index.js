@@ -1,12 +1,14 @@
 const { getBaiduNews } = require('./feature/getBaiduNews')
 const express = require('express')
 const app = express()
-const data = getBaiduNews()
 const port = 3000
 app.use(express.static('./page/static'))
 app.get('/', (req, res) => {
-  // res.send(data)
-  res.send('motherfucker')
+  getBaiduNews().then(data=>{
+    res.send(data)
+  }).catch((e)=>{
+    res.status(500).end()
+  })
 })
 
 app.listen(port,  function () {
