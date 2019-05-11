@@ -39,7 +39,7 @@ module.exports = {
      * @param callback {Function} The callback to be invoked before the next repaint.
      * @param root {HTMLElement} The root element for the repaint
      */
-    requestAnimationFrame: (function () {
+    requestAnimationFrame: (function () { // requestAnimateFrame 的补丁 用在不兼容的情况
 
         // Check for request animation Frame support
         var requestFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame;

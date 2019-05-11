@@ -8,6 +8,7 @@
 const Animate = require('./animate');
 
 var Scroller = function (component, content, options) {
+    // component => 绑定事件的元素
     var self = this;
 
     if (!component) return;
@@ -65,7 +66,7 @@ var members = {
     __didDecelerationComplete: false,
     __isGesturing: false,
     __isDragging: false,
-    __isDecelerating: false,
+    __isDecelerating: false, // declelerating 减速 ***
     __isAnimating: false,
     __clientTop: 0,
     __clientHeight: 0,
@@ -248,8 +249,8 @@ var members = {
 
         // Are we already is dragging mode?
         if (self.__isDragging) {
-            var moveY = currentTouchTop - self.__lastTouchTop
-            var scrollTop = self.__scrollTop
+            var moveY = currentTouchTop - self.__lastTouchTop // 第一次点击和上一次点击的距离
+            var scrollTop = self.__scrollTop // ? 啥意思 __scrollTop TODO
 
             if (self.__enableScrollY) {
                 scrollTop -= moveY
@@ -383,6 +384,7 @@ var members = {
     },
 
     // Applies the scroll position to the content element
+    // 就是去做滚动动画
     __publish (top, animationDuration) {
         var self = this
 
@@ -433,6 +435,7 @@ var members = {
     },
 
     // Called when a touch sequence end and the speed of the finger was high enough to switch into deceleration mode.
+    // 触摸结束时手指滑动的够快进行滑动减速
     __startDeceleration (timeStamp) {
         var self = this
 
