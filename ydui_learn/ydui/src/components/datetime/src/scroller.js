@@ -5,6 +5,7 @@
  * Licensed under the MIT License.
  * https://raw.github.com/zynga/scroller/master/MIT-LICENSE.txt
  */
+// 互动的动画效果没有在这里实现，在datetime中实现了，d一下就是属于执行框架
 const Animate = require('./animate');
 
 var Scroller = function (component, content, options) {
@@ -77,8 +78,8 @@ var members = {
     __maxScrollTop: 0,
     __scheduledTop: 0,
     __lastTouchTop: null,
-    __lastTouchMove: null,
-    __positions: null,
+    __lastTouchMove: null, // 最后一次滑动的时间点
+    __positions: null, // 位置时间点和位置数组，用来进行减速滑动 =>[distance,time,distance,time,distance]
     __minDecelerationScrollTop: null,
     __maxDecelerationScrollTop: null,
     __decelerationVelocityY: null,
@@ -164,7 +165,7 @@ var members = {
         }
     },
 
-    __doTouchStart (ev, timeStamp) {
+    __doTouchStart (ev, timeStamp) { // 滑动开始
         const touches = ev.touches
         const self = this
         const target = ev.touches ? ev.touches[0] : ev
@@ -273,7 +274,7 @@ var members = {
                 positions.splice(0, 20)
             }
 
-            // Track scroll movement for decleration
+            // Track scroll movement for decleration 跟踪scroll中的位置信息用来滚动完之后减速
             positions.push(scrollTop, timeStamp)
 
             // Sync scroll position
@@ -299,7 +300,7 @@ var members = {
 
         // Update last touch positions and time stamp for next event
         self.__lastTouchTop = currentTouchTop
-        self.__lastTouchMove = timeStamp
+        self.__lastTouchMove = timeStamp // 这个是个时间
         self.__lastScale = scale
     },
 
@@ -395,7 +396,7 @@ var members = {
             self.__isAnimating = false
         }
 
-        if (animationDuration) {
+        if (animationDuration) { // 滑动够快了有减速执行这个
             // Keep scheduled positions for scrollBy functionality
             self.__scheduledTop = top
 
@@ -425,7 +426,7 @@ var members = {
 
             // When continuing based on previous animation we choose an ease-out animation instead of ease-in-out
             self.__isAnimating = Animate.start(step, verify, completed, animationDuration, wasAnimating ? self.__easeOutCubic : self.__easeInOutCubic)
-        } else {
+        } else { // touchmove的时候，没有animationDuration执行这个
             self.__scheduledTop = self.__scrollTop = top
             // Push values out
             if (self.options.callback) {
@@ -475,10 +476,9 @@ var members = {
         self.__isDecelerating = Animate.start(step, verify, completed)
     },
 
-    // Called on every step of the animation
+    // Called on every step of the animation 
     __stepThroughDeceleration (render) {
         var self = this
-
         var scrollTop = self.__scrollTop + self.__decelerationVelocityY
 
         var scrollTopFixed = Math.max(Math.min(self.__maxDecelerationScrollTop, scrollTop), self.__minDecelerationScrollTop)
