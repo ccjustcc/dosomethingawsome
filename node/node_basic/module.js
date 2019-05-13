@@ -1,2 +1,5 @@
+const os = require('os')
+let interface = os.networkInterfaces()
 console.log('see all in model object')
+console.log('os interface',interface)
 console.log(module)
