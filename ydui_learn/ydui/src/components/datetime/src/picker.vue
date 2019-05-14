@@ -251,6 +251,7 @@
                             _this.scrolling[item] = false;
                         },
                         callback(top, isDragging) {
+                            // 这个就是滚动的具体执行动画
                             if (isDragging) {
                                 _this.scrolling[item] = true;
                             }

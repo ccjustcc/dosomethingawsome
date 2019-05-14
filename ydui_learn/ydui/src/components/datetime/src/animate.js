@@ -165,7 +165,7 @@ module.exports = {
             running = newRunning;
         }
 
-        // This is the internal step method which is called every few milliseconds
+        // This is the internal step method which is called every few milliseconds requestFrame里面的每一步
         var step = function (virtual) {
 
             // Normalize virtual value
@@ -174,7 +174,7 @@ module.exports = {
             // Get current time
             var now = time();
 
-            // Verification is executed before next animation step
+            // Verification is executed before next animation step 动画判断并且动画完成
             if (!running[id] || (verifyCallback && !verifyCallback(id))) {
 
                 running[id] = null;
@@ -214,13 +214,13 @@ module.exports = {
             }
         };
 
-        // Mark as running
+        // Mark as running 标记为动画在运行
         running[id] = true;
 
-        // Init first step
+        // Init first step 第一步动画
         _this.requestAnimationFrame(step, root);
 
-        // Return unique animation ID
+        // Return unique animation ID 返回动画id
         return id;
     }
 };

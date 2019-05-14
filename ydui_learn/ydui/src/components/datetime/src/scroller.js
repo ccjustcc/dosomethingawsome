@@ -495,7 +495,7 @@ var members = {
             self.__decelerationVelocityY *= 0.95
         }
 
-        self.__publish(scrollTop)
+        self.__publish(scrollTop) // 最终关联到动画执行还是这个函数
     }
 };
 
