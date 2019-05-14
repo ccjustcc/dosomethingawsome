@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>首页</title>
+  <title>请求体</title>
 </head>
 <body>
    <%- include('./components/head.html')%>
-   <h1>这个是首页</h1>
+   <h1>这个是请求体的一些信息</h1>
+   <div>
+     <div>
+       <%for(var i in req){%>
+        <div>
+          <%=i%>
+        </div>
+       <%}%>
+
+     </div>
+   </div>
 </body>
 </html>

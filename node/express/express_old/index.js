@@ -4,45 +4,55 @@ const path = require('path')
 const app = express()
 const port = 3000
 const os = require('os')
-const interface = os.networkInterfaces()['本地连接'][1].address
+const url = os.networkInterfaces()['本地连接'][1].address
 const routes = require('./router')
 const fs = require('fs')
-// console.log(routes)
+const controller = require('./controller')
+const cookieParser = require('cookie-parser')
 
+// 设置这个中间件才可以使用req.cookie 但是res.cookie()却可以用，迷，不知为何不默认集成
+app.use(cookieParser())
 // 静态资源服务器
 app.use(express.static('./page/static'))
 // 设置ejs引擎
-app.set('views',path.join(__dirname , 'views') )
+app.set('views', path.join(__dirname, 'views'))
 app.engine('.html', require('ejs').__express)
 app.set('view engine', 'html')
 
-function generateViewRouter(path){
-  app.get(`/${path}`,function(req,res){
-    res.render(path)
+function generateViewRouter(path) {
+  app.get(`/${path}`, function(req, res) {
+    // res.render(path,controller[`${path}Contorller`]?controller[`${path}Contorller`](req,res): null)
+    controller[`${path}Controller`] ? controller[`${path}Controller`](req, res, path) : res.render(path)
   })
 }
 
 // api接口
-app.use('/api',routes.apis)
+app.use('/api', routes.apis)
 
-app.get('/',function(req,res){
+app.get('/', function(req, res) {
   res.render('index')
 })
 
+// app.use('',function(req,res,next){ // 用来校验
+//   console.log('req----')
+//   next()
+// })
+
 fs.readdir('./views', (err, files) => {
+  if (err) {
+    console.log(err)
+  }
   files.forEach(file => {
-    console.log(file)
-    console.log(typeof file)
-    if(file.includes('.')){
-      console.log(file.split('.'))
+    if (file.includes('.')) {
       generateViewRouter(file.split('.')[0])
-   }
-  });
+    }
+  })
 })
+app.set('view cache', false)
 
 // fs.readFileSync(__dirname)
 console.log(__dirname)
 
-app.listen(port,  function () {
-  console.log(`running at:http://${interface}:${port}`)
+app.listen(port, function() {
+  console.log(`running at:http://${url}:${port}`)
 })

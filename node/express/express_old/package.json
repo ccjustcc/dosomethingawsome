@@ -1,8 +1,11 @@
 {
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "cookie-parser": "^1.4.4",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "mongoose": "^5.5.8", 
     "superagent": "^5.0.2"
   },
   "scripts": {
