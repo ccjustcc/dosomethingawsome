@@ -1,4 +1,3 @@
-const { getBaiduNews } = require('./feature/getBaiduNews')
 const express = require('express')
 const path = require('path')
 const app = express()
@@ -9,6 +8,7 @@ const routes = require('./router')
 const fs = require('fs')
 const controller = require('./controller')
 const cookieParser = require('cookie-parser')
+const db = require('./config/mongodb')
 
 // 设置这个中间件才可以使用req.cookie 但是res.cookie()却可以用，迷，不知为何不默认集成
 app.use(cookieParser())
