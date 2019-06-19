@@ -21,7 +21,6 @@ app.set('view engine', 'html')
 
 function generateViewRouter(path) {
   app.get(`/${path}`, function(req, res) {
-    // res.render(path,controller[`${path}Contorller`]?controller[`${path}Contorller`](req,res): null)
     controller[`${path}Controller`] ? controller[`${path}Controller`](req, res, path) : res.render(path)
   })
 }
@@ -38,6 +37,7 @@ app.get('/', function(req, res) {
 //   next()
 // })
 
+// 获取视图文件，渲染视图
 fs.readdir('./views', (err, files) => {
   if (err) {
     console.log(err)
@@ -50,7 +50,6 @@ fs.readdir('./views', (err, files) => {
 })
 app.set('view cache', false)
 
-// fs.readFileSync(__dirname)
 console.log(__dirname)
 
 app.listen(port, function() {

@@ -27,4 +27,6 @@ router.get('/setUser', (req, res) => {
   })
 })
 
+router.post()
+
 module.exports = router

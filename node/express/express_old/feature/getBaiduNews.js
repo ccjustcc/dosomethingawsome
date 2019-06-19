@@ -2,7 +2,7 @@ const superagent = require('superagent')
 const cheerio = require('cheerio')
 let hotNews = []
 // 获取百度新闻
-async function  getBaiduNews () {
+async function getBaiduNews () {
  return await new Promise((resolve,rej)=>{
     superagent.get('http://news.baidu.com/').end((err, res) => {
       if (err) {
@@ -40,6 +40,7 @@ let getHotNews = (res) => {
   })
   return hotNews
 }
+
 module.exports = {
   getBaiduNews
 }
