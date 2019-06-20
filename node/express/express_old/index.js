@@ -8,7 +8,14 @@ const routes = require('./router')
 const fs = require('fs')
 const controller = require('./controller')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const db = require('./config/mongodb')
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // 设置这个中间件才可以使用req.cookie 但是res.cookie()却可以用，迷，不知为何不默认集成
 app.use(cookieParser())
@@ -48,6 +55,7 @@ fs.readdir('./views', (err, files) => {
     }
   })
 })
+
 app.set('view cache', false)
 
 console.log(__dirname)
