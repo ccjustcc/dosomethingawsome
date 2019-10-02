@@ -3,13 +3,14 @@ const path = require('path')
 const app = express()
 const port = 3000
 const os = require('os')
-const url = os.networkInterfaces()['本地连接'][1].address
+const url = os.networkInterfaces()['本地连接'] ? os.networkInterfaces()['本地连接'][1].address : os.networkInterfaces()['WLAN'] ? os.networkInterfaces()['WLAN'][1].address : null
 const routes = require('./router')
 const fs = require('fs')
 const controller = require('./controller')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const db = require('./config/mongodb')
+const session = require('express-session')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -19,6 +20,13 @@ app.use(bodyParser.json())
 
 // 设置这个中间件才可以使用req.cookie 但是res.cookie()却可以用，迷，不知为何不默认集成
 app.use(cookieParser())
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { }
+}
+))
 // 静态资源服务器
 app.use(express.static('./page/static'))
 // 设置ejs引擎
@@ -38,11 +46,6 @@ app.use('/api', routes.apis)
 app.get('/', function(req, res) {
   res.render('index')
 })
-
-// app.use('',function(req,res,next){ // 用来校验
-//   console.log('req----')
-//   next()
-// })
 
 // 获取视图文件，渲染视图
 fs.readdir('./views', (err, files) => {

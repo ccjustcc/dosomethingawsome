@@ -15,25 +15,97 @@ router.get('/getBaiduNews', (req, res) => {
   })
 })
 
+router.get('/cookies', (req, res) => {
+  res.send(req.cookies)
+})
+
+router.get('/session', (req, res) => {
+  if (req.session.views) {
+    req.session.views++
+    res.setHeader('Content-Type', 'text/html')
+    res.write('<p>views: ' + req.session.views + '</p>')
+    res.write('<p>expires in: ' + (req.session.cookie.maxAge / 1000) + 's</p>')
+    console.log('seesion', req.session)
+    res.end()
+  } else {
+    req.session.views = 1
+    // let bigString = ''
+    // for (let i = 0; i < 1000; i++) {
+    //   bigString = bigString + '1000101001010011010101010110000'
+    // }
+    // req.session.bigString = bigString
+    res.end('welcome to the session demo. refresh!')
+  }
+})
+
 router.post('/setUser', (req, res) => {
   const user = new UserModel({
 
   })
-  // console.log('saving....')
-  // user.save((error) => {
-  //   if (error) {
-  //     res.sendStatus(500)
-  //     console.log(error)
-  //   }
-  //   console.log('end')
-  //   res.write('success')
-  //   res.end()
-  // })
-  // res.json({
-  //   code: 0,
-  //   data: 'data',
-  //   msg: 'success'
-  // })
+  console.log('saving....')
+  user.save((error) => {
+    if (error) {
+      res.sendStatus(500)
+      console.log(error)
+    }
+    console.log('end')
+    res.write('success')
+    res.end()
+  })
+  res.json({
+    code: 0,
+    data: 'data',
+    msg: 'success'
+  })
+})
+router.post('/register', (req, res) => {
+  const {
+    name,
+    password
+  } = req.body
+  const user = new UserModel({
+    name,
+    password,
+    username: name
+  })
+  console.log('user', user.name = name)
+  user.save().then((doc, len, err) => {
+    console.log(`result :${doc}`)
+    console.log(`err: ${err}`)
+    console.log(`three : ${len}`)
+    if (err) {
+      res.sendStatus(500)
+    } else {
+      console.log('success---------')
+      res.redirect('/login')
+    }
+  })
+})
+router.post('/login', (req, res) => {
+  const {
+    name,
+    password
+  } = req.body
+  UserModel.findOne({
+    name
+  }).where('password').equals(password).exec((err, result) => {
+    if (err) {
+      console.log('login query error', err)
+    }
+    if (result) {
+      res.json({
+        code: 200,
+        data: result,
+        msg: 'success'
+      })
+    } else {
+      res.json({
+        code: 200,
+        data: result,
+        msg: 'fail'
+      })
+    }
+  })
 })
 
 router.get('/getUser', (res, req, next) => {

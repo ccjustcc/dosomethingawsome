@@ -5,7 +5,8 @@
    */
 const cookieController = (req, res, path) => {
   const data = {
-    cookies: req.cookies
+    // cookies: req.cookies
+    cookies: 'this is a test'
   }
   res.render(path, data)
 }
@@ -14,6 +15,14 @@ const requestController = (req, res, path) => {
     req
   }
   res.render(path, data)
+}
+
+const loginController = (req, res, path) => {
+
+}
+
+const registerController = (req, res, path) => {
+
 }
 module.exports = {
   cookieController,
